@@ -36,7 +36,7 @@ const UsersModel = sequelize.define("user",
             allowNull: false
         },
         image: {
-            type: DataTypes.STRING(100),
+            type: DataTypes.STRING(1000),
             allowNull: false
         }
     })
