@@ -4,6 +4,7 @@ import createHttpError from "http-errors";
 import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { v2 as cloudinary } from "cloudinary";
+import q2s from 'query-to-sequelize'
 
 const usersRouter = Express.Router()
 
@@ -19,8 +20,20 @@ usersRouter.post("/", async (request, response, next) => {
 
 usersRouter.get("/", async (request, response, next) => {
     try {
-        const users = await UsersModel.findAll()
-        response.send(users)
+        const seqQuery = q2s(request.query)
+        const { count, rows } = await UsersModel.findAndCountAll({
+            where: seqQuery.criteria,
+            order: seqQuery.options.sort,
+            offset: seqQuery.options.skip,
+            limit: seqQuery.options.limit
+        })
+
+        response.send({
+            total: count,
+            numberOfPages: Math.ceil(count / seqQuery.options.limit),
+            links: seqQuery.links(`${process.env.BE_URL}/users`, count),
+            users: rows
+        })
     } catch (error) {
         next(error)
     }
