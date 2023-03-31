@@ -69,28 +69,28 @@ usersRouter.delete("/:userId", async (request, response, next) => {
 })
 
 
-const cloudinaryUploader = multer({
-    storage: new CloudinaryStorage({
-        cloudinary,
-        params: {
-            folder: "fs0522/linkedin"
-        }
-    })
-}).single('profile')
+// const cloudinaryUploader = multer({
+//     storage: new CloudinaryStorage({
+//         cloudinary,
+//         params: {
+//             folder: "fs0522/linkedin"
+//         }
+//     })
+// }).single('profile')
 
 
-usersRouter.post("/:userId/image", cloudinaryUploader, async (request, response, next) => {
-    try {
-        const [numberOfUpdatedUsers, updatedUsers] = await UsersModel.update({ image: request.file.path }, { where: { id: request.params.userId }, returning: true })
-        if (numberOfUpdatedUsers === 1) {
-            response.send(updatedUsers[0])
-        } else {
-            next(createHttpError(404, `User with id ${request.params.userId} was not found!`))
-        }
-    } catch (error) {
-        next(error)
-    }
-})
+// usersRouter.post("/:userId/image", cloudinaryUploader, async (request, response, next) => {
+//     try {
+//         const [numberOfUpdatedUsers, updatedUsers] = await UsersModel.update({ image: request.file.path }, { where: { id: request.params.userId }, returning: true })
+//         if (numberOfUpdatedUsers === 1) {
+//             response.send(updatedUsers[0])
+//         } else {
+//             next(createHttpError(404, `User with id ${request.params.userId} was not found!`))
+//         }
+//     } catch (error) {
+//         next(error)
+//     }
+// })
 
 
 
