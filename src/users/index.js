@@ -5,6 +5,7 @@ import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { v2 as cloudinary } from "cloudinary";
 import q2s from 'query-to-sequelize'
+import ExperiencesModel from "../experiences/model.js";
 
 const usersRouter = Express.Router()
 
@@ -25,7 +26,8 @@ usersRouter.get("/", async (request, response, next) => {
             where: seqQuery.criteria,
             order: seqQuery.options.sort,
             offset: seqQuery.options.skip,
-            limit: seqQuery.options.limit
+            limit: seqQuery.options.limit,
+            include: [{ model: ExperiencesModel }]
         })
 
         response.send({
