@@ -4,6 +4,7 @@ import createHttpError from "http-errors";
 import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { v2 as cloudinary } from "cloudinary";
+import UsersModel from "../users/model.js";
 
 
 
@@ -23,7 +24,7 @@ experiencesRouter.post("/:userId/experiences", async (request, response, next) =
 
 experiencesRouter.get("/:userId/experiences", async (request, response, next) => {
     try {
-        const experiences = await ExperiencesModel.findAll({ where: { userId: request.params.userId } })
+        const experiences = await ExperiencesModel.findAll({ where: { userId: request.params.userId }, include: [{ model: UsersModel, attributes: ["name", "surname"] }] })
         response.send(experiences)
     } catch (error) {
         next(error)
