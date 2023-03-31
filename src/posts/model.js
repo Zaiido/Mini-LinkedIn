@@ -10,7 +10,7 @@ const PostsModel = sequelize.define("posts",
             defaultValue: DataTypes.UUIDV4
         },
         text: {
-            type: DataTypes.STRING(500),
+            type: DataTypes.STRING(5000),
             allowNull: false
         },
         image: {
